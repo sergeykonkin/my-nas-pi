@@ -1,0 +1,6 @@
+---
+- name: Download nerdctl binary
+  ansible.builtin.unarchive:
+    src: https://github.com/containerd/nerdctl/releases/download/v{{ nerdctl_version }}/nerdctl-{{ nerdctl_version }}-linux-arm64.tar.gz
+    dest: /usr/local/bin
+    remote_src: true

@@ -1,0 +1,15 @@
+apiVersion: kubelet.config.k8s.io/v1beta1
+kind: KubeletConfiguration
+
+authentication:
+  webhook:
+    enabled: false
+authorization:
+  mode: AlwaysAllow
+enableServer: false
+logging:
+  format: text
+  sanitization: false
+podCIDR: 10.241.1.0/24
+containerRuntimeEndpoint: unix:///run/containerd/containerd.sock
+staticPodPath: /etc/kubernetes/manifests

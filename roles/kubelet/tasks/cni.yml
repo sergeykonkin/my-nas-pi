@@ -1,0 +1,28 @@
+---
+- name: Create CNI direcotries
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: directory
+    owner: root
+    group: root
+    mode: "0755"
+  loop:
+    - /opt/cni/bin/
+    - /etc/cni/net.d
+
+- name: Download CNI plugins
+  ansible.builtin.unarchive:
+    src: https://github.com/containernetworking/plugins/releases/download/v{{ cni_version }}/cni-plugins-linux-arm64-v{{ cni_version }}.tgz
+    dest: /opt/cni/bin/
+    remote_src: true
+    mode: "0755"
+  notify: containerd_restart
+
+- name: Copy cni.template
+  ansible.builtin.copy:
+    src: files/cni.template
+    dest: /etc/cni/cni.template
+    owner: root
+    group: root
+    mode: "0644"
+  notify: containerd_restart

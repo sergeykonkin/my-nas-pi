@@ -1,0 +1,11 @@
+---
+- name: Apply workloads
+  hosts: all
+  become: true
+  gather_facts: true
+
+  tasks:
+    - name: Sync manifests folder
+      ansible.posix.synchronize:
+        src: manifests/
+        dest: /etc/kubernetes/manifests/

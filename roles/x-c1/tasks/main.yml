@@ -1,0 +1,10 @@
+---
+- name: Install x-c1-fan
+  ansible.builtin.include_tasks: fan.yml
+- name: Install x-c1-pwr
+  ansible.builtin.include_tasks: pwr.yml
+- name: Install softsd
+  ansible.builtin.include_tasks: softsd.yml
+
+- name: Flush handlers
+  ansible.builtin.meta: flush_handlers

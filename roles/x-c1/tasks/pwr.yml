@@ -1,0 +1,25 @@
+---
+- name: Copy x-c1-pwr.sh
+  ansible.builtin.copy:
+    src: files/x-c1-pwr.sh
+    dest: /usr/local/bin/x-c1-pwr.sh
+    owner: root
+    group: root
+    mode: "0755"
+  notify: pwr_restart
+
+- name: Copy x-c1-pwr.service
+  ansible.builtin.copy:
+    src: files/x-c1-pwr.service
+    dest: /etc/systemd/system/x-c1-pwr.service
+    owner: root
+    group: root
+    mode: "0644"
+  notify: pwr_restart
+
+- name: Enable x-c1-pwr.service
+  ansible.builtin.systemd_service:
+    name: x-c1-pwr
+    daemon_reload: true
+    enabled: true
+  notify: pwr_restart

@@ -1,0 +1,34 @@
+---
+- name: Create /data
+  ansible.builtin.file:
+    path: /data
+    state: directory
+    owner: root
+    group: root
+    mode: "0755"
+
+- name: Install xfsprogs
+  ansible.builtin.apt:
+    name: xfsprogs
+
+# if there is already a filesystem on the disk:
+# sudo dd if=/dev/zero of=/dev/sda bs=1M count=1
+# won't do force here
+- name: Create an xfs filesystem on /dev/sda
+  community.general.filesystem:
+    fstype: xfs
+    state: present
+    dev: /dev/sda
+
+- name: Fetch the UUID of /dev/sda
+  ansible.builtin.command: blkid -s UUID -o value /dev/sda
+  changed_when: false
+  register: blkid_out
+
+- name: Mount /dev/sda by UUID
+  ansible.posix.mount:
+    path: /data
+    src: UUID={{ blkid_out.stdout }}
+    fstype: xfs
+    opts: defaults
+    state: mounted

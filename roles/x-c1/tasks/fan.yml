@@ -1,0 +1,31 @@
+---
+- name: Flush handlers
+  ansible.builtin.meta: flush_handlers
+
+- name: Copy x-c1-fan.sh
+  ansible.builtin.copy:
+    src: files/x-c1-fan.sh
+    dest: /usr/local/bin/x-c1-fan.sh
+    owner: root
+    group: root
+    mode: "0755"
+  notify: fan_restart
+
+- name: Copy x-c1-fan.service
+  ansible.builtin.copy:
+    src: files/x-c1-fan.service
+    dest: /etc/systemd/system/x-c1-fan.service
+    owner: root
+    group: root
+    mode: "0644"
+  notify: fan_restart
+
+- name: Enable x-c1-fan.service
+  ansible.builtin.systemd_service:
+    name: x-c1-fan
+    daemon_reload: true
+    enabled: true
+  notify: fan_restart
+
+- name: Flush handlers
+  ansible.builtin.meta: flush_handlers

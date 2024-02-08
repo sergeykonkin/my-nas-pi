@@ -1,0 +1,9 @@
+oom_score = -999
+
+[plugins.linux]
+  runtime = "/usr/sbin/runc"
+
+[plugins.cri.cni]
+  bin_dir = "/opt/cni/bin"
+  conf_dir = "/etc/cni/net.d"
+  conf_template = "/etc/cni/cni.template"

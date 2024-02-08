@@ -1,0 +1,14 @@
+---
+- name: Restart x-c1-fan.service
+  ansible.builtin.systemd_service:
+    name: x-c1-fan
+    daemon_reload: true
+    state: restarted
+  listen: fan_restart
+
+- name: Restart x-c1-pwr.service
+  ansible.builtin.systemd_service:
+    name: x-c1-pwr
+    daemon_reload: true
+    state: restarted
+  listen: pwr_restart

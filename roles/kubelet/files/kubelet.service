@@ -1,0 +1,12 @@
+[Unit]
+Description=Kubernetes kubelet
+Requires=network-online.target
+After=network-online.target
+
+[Service]
+Restart=always
+RestartSec=10
+ExecStartPre=/usr/sbin/dphys-swapfile swapoff
+ExecStart=/usr/local/bin/kubelet -v=2 --config=/etc/kubernetes/kubelet-config.yaml
+[Install]
+WantedBy=multi-user.target

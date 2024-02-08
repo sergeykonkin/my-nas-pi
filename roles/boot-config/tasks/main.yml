@@ -1,0 +1,27 @@
+---
+- name: Determine boot dir path
+  ansible.builtin.set_fact:
+    boot_dir: "{% if ansible_distribution_major_version | int >= 12 %}/boot/firmware{% else %}/boot{% endif %}"
+
+- name: Enable pmw
+  community.general.ini_file:
+    path: "{{ boot_dir }}/config.txt"
+    section: all
+    option: dtoverlay
+    value: pwm-2chan
+    no_extra_spaces: true
+    mode: "0644"
+  notify: reboot
+
+- name: Check if cgroup memory already enabled
+  ansible.builtin.shell: grep -c "cgroup_memory" "{{ boot_dir }}/cmdline.txt" || true
+  register: cgroup_memory_grep
+  changed_when: false
+
+- name: Add cgroup memory to boot cmdline
+  ansible.builtin.shell: echo -n " cgroup_memory=1 cgroup_enable=memory">>"{{ boot_dir }}/cmdline.txt"
+  when: cgroup_memory_grep.stdout == "0"
+  notify: reboot
+
+- name: Flush handlers
+  ansible.builtin.meta: flush_handlers

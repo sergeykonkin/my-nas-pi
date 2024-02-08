@@ -1,0 +1,39 @@
+---
+- name: Download kubelet binary
+  ansible.builtin.get_url:
+    url: https://dl.k8s.io/v{{ kubelet_version }}/bin/linux/arm64/kubelet
+    dest: /usr/local/bin/kubelet
+    mode: "0755"
+
+- name: Create config direcotry
+  ansible.builtin.file:
+    path: /etc/kubernetes/manifests
+    state: directory
+    owner: root
+    group: root
+    mode: "0755"
+
+- name: Copy kubelet-config.yaml
+  ansible.builtin.copy:
+    src: files/kubelet-config.yaml
+    dest: /etc/kubernetes/kubelet-config.yaml
+    owner: root
+    group: root
+    mode: "0644"
+  notify: kubelet_restart
+
+- name: Copy kubelet.service
+  ansible.builtin.copy:
+    src: files/kubelet.service
+    dest: /etc/systemd/system/kubelet.service
+    owner: root
+    group: root
+    mode: "0644"
+  notify: kubelet_restart
+
+- name: Enable kubelet.service
+  ansible.builtin.systemd_service:
+    name: kubelet
+    daemon_reload: true
+    enabled: true
+    state: started

@@ -1,0 +1,8 @@
+---
+- name: Copy x-c1-softsd.sh as xoff
+  ansible.builtin.copy:
+    src: files/x-c1-softsd.sh
+    dest: /usr/local/bin/xoff
+    owner: root
+    group: root
+    mode: "0755"

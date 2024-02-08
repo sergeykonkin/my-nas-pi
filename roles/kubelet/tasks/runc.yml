@@ -1,0 +1,7 @@
+---
+- name: Download runc binary
+  ansible.builtin.get_url:
+    url: https://github.com/opencontainers/runc/releases/download/v{{ runc_version }}/runc.arm64
+    dest: /usr/local/sbin/runc
+    mode: "0755"
+  notify: containerd_restart

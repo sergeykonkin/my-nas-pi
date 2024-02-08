@@ -1,0 +1,39 @@
+---
+- name: Download containerd binaries
+  ansible.builtin.unarchive:
+    src: https://github.com/containerd/containerd/releases/download/v{{ containerd_version }}/containerd-{{ containerd_version }}-linux-arm64.tar.gz
+    dest: /usr/local
+    remote_src: true
+  notify: containerd_restart
+
+- name: Create containerd config direcotry
+  ansible.builtin.file:
+    path: /etc/containerd
+    state: directory
+    owner: root
+    group: root
+    mode: "0755"
+
+- name: Copy containerd config.toml
+  ansible.builtin.copy:
+    src: files/containerd.toml
+    dest: /etc/containerd/config.toml
+    owner: root
+    group: root
+    mode: "0644"
+  notify: containerd_restart
+
+- name: Download containerd.service
+  ansible.builtin.get_url:
+    url: https://raw.githubusercontent.com/containerd/containerd/v{{ containerd_version }}/containerd.service
+    dest: /etc/systemd/system/containerd.service
+    checksum: sha256:4576c080ab8a3eec318b4ea9017aba47b929b6de148fa442d78b8b3d21e5479b
+    mode: "0644"
+  notify: containerd_restart
+
+- name: Enable containerd.service
+  ansible.builtin.systemd_service:
+    name: containerd.service
+    daemon_reload: true
+    enabled: true
+    state: started

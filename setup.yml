@@ -1,0 +1,11 @@
+---
+- name: Setup
+  hosts: all
+  become: true
+  gather_facts: true
+
+  roles:
+    - role: boot-config
+    - role: x-c1
+    - role: ext-hard-drive
+    - role: kubelet

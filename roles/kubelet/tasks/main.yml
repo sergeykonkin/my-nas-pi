@@ -1,0 +1,16 @@
+---
+- name: Install iptables
+  ansible.builtin.include_tasks: iptables.yml
+- name: Install cni
+  ansible.builtin.include_tasks: cni.yml
+- name: Install runc
+  ansible.builtin.include_tasks: runc.yml
+- name: Install containerd
+  ansible.builtin.include_tasks: containerd.yml
+- name: Install nerdctl
+  ansible.builtin.include_tasks: nerdctl.yml
+- name: Install kubelet
+  ansible.builtin.include_tasks: kubelet.yml
+
+- name: Flush handlers
+  ansible.builtin.meta: flush_handlers
