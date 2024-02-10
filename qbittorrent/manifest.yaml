@@ -1,0 +1,43 @@
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: qbittorrent
+spec:
+  containers:
+    - name: qbittorrent
+      image: docker.io/qbittorrentofficial/qbittorrent-nox:4.6.3-1
+      env:
+        - name: QBT_EULA
+          value: accept
+        - name: PUID
+          value: "0"
+        - name: GUID
+          value: "0"
+      ports:
+        - containerPort: 8080
+          hostPort: 8080
+      volumeMounts:
+        - name: config
+          mountPath: /config/qBittorrent
+        - name: entrypoint
+          mountPath: /entrypoint.sh
+        - name: tmpfs
+          mountPath: /tmp
+        - name: data
+          mountPath: /data
+  volumes:
+    - name: config
+      hostPath:
+        path: /etc/qbittorrent
+        type: Directory
+    - name: entrypoint
+      hostPath:
+        path: /etc/qbittorrent/entrypoint.sh
+        type: File
+    - name: tmpfs
+      emptyDir: {}
+    - name: data
+      hostPath:
+        path: /data
+        type: Directory

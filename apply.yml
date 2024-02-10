@@ -1,2 +1,3 @@
 ---
 - import_playbook: filebrowser/playbook.yml
+- import_playbook: qbittorrent/playbook.yml
