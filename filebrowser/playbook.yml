@@ -1,0 +1,29 @@
+---
+- name: Filebrowser
+  hosts: all
+  become: true
+  gather_facts: true
+
+  tasks:
+    - name: Create directories
+      ansible.builtin.file:
+        path: "{{ item }}"
+        state: directory
+        owner: root
+        group: root
+        mode: "0755"
+      loop:
+        - /etc/filebrowser
+        - /opt/filebrowser
+    - name: Copy files
+      ansible.builtin.template:
+        src: "{{ item.from }}"
+        dest: "{{ item.to  }}"
+        owner: root
+        group: root
+        mode: "0644"
+      loop:
+        - from: config.json
+          to: /etc/filebrowser/config.json
+        - from: manifest.yaml
+          to: /etc/kubernetes/manifests/filebrowser.yaml
