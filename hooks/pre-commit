@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 set -e
 
-for f in **/*.ovpn ; do
-    grep '$ANSIBLE_VAULT;' $f > /dev/null || echo "err: $f must be encrypted with ansible-vault"
-done
+for file in $(git diff --cached --name-only); do
+  if [[ "$file" == *.ovpn ]]; then
+    grep '$ANSIBLE_VAULT;' $file > /dev/null || (echo "err: $file must be encrypted with ansible-vault"; exit 1;)
+  fi;
+done;
