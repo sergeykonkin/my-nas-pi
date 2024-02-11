@@ -11,13 +11,11 @@ spec:
   containers:
     - name: node-exporter
       image: quay.io/prometheus/node-exporter:v1.7.0
-      args: ['--path.rootfs=/host']
       volumeMounts:
         - name: rootfs
-          mountPath: /host
+          mountPath: /rootfs
           readOnly: true
   volumes:
     - name: rootfs
       hostPath:
         path: /
-      readOnly: true
