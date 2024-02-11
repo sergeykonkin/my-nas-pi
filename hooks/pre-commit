@@ -3,6 +3,6 @@ set -e
 
 for file in $(git diff --cached --name-only); do
   if [[ "$file" == *.ovpn ]]; then
-    grep '$ANSIBLE_VAULT;' $file > /dev/null || (echo "err: $file must be encrypted with ansible-vault"; exit 1;)
+    head -1 $file | grep '$ANSIBLE_VAULT;' > /dev/null || (echo "err: $file must be encrypted with ansible-vault"; exit 1;)
   fi;
 done;
