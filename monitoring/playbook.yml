@@ -31,5 +31,7 @@
           to: /etc/kubernetes/manifests/prometheus.yaml
         - from: exporters/node-exporter.yaml
           to: /etc/kubernetes/manifests/node-exporter.yaml
+        - from: exporters/cadvisor.yaml
+          to: /etc/kubernetes/manifests/cadvisor.yaml
         - from: grafana.yaml
           to: /etc/kubernetes/manifests/grafana.yaml

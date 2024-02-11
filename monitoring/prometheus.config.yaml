@@ -11,3 +11,9 @@ scrape_configs:
       - targets: ['localhost:9100']
         labels:
           cluster: nas-pi
+  - job_name: 'cadvisor'
+    static_configs:
+      - targets: ['localhost:9092']
+        labels:
+          cluster: nas-pi
+          node: nas-pi
