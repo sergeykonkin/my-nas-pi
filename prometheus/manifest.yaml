@@ -11,9 +11,6 @@ spec:
   containers:
     - name: prometheus
       image: quay.io/prometheus/prometheus:v2.45.3
-      ports:
-        - containerPort: 9090
-          hostPort: 9090
       volumeMounts:
         - name: config
           mountPath: /etc/prometheus/prometheus.yml
