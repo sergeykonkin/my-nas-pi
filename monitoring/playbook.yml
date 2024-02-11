@@ -15,6 +15,7 @@
       loop:
         - /etc/prometheus
         - /data/.prometheus
+        - /data/.grafana
 
     - name: Copy files
       ansible.builtin.template:
@@ -24,9 +25,11 @@
         group: root
         mode: "0644"
       loop:
-        - from: config.yaml
+        - from: prometheus.config.yaml
           to: /etc/prometheus/prometheus.yml
-        - from: manifest.yaml
+        - from: prometheus.yaml
           to: /etc/kubernetes/manifests/prometheus.yaml
         - from: exporters/node-exporter.yaml
           to: /etc/kubernetes/manifests/node-exporter.yaml
+        - from: grafana.yaml
+          to: /etc/kubernetes/manifests/grafana.yaml

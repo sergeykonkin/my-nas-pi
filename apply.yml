@@ -2,3 +2,4 @@
 - import_playbook: filebrowser/playbook.yml
 - import_playbook: qbittorrent/playbook.yml
 - import_playbook: jellyfin/playbook.yml
+- import_playbook: monitoring/playbook.yml
