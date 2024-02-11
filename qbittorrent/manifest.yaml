@@ -46,11 +46,11 @@ spec:
   volumes:
     - name: config
       hostPath:
-        path: /etc/qbittorrent
+        path: /data/.qbittorrent
         type: Directory
     - name: entrypoint
       hostPath:
-        path: /etc/qbittorrent/entrypoint.sh
+        path: /opt/qbittorrent/entrypoint.sh
         type: File
     - name: tmpfs
       emptyDir: {}

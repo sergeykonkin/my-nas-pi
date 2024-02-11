@@ -11,12 +11,12 @@
   tasks:
     - name: Check if config dir exists
       ansible.builtin.stat:
-        path: /etc/qbittorrent/config
+        path: /data/.qbittorrent/config
       register: config_dir
 
-    - name: Create directories
+    - name: Create config directory
       ansible.builtin.file:
-        path: /etc/qbittorrent/config
+        path: /data/.qbittorrent/config
         state: directory
         owner: root
         group: root
@@ -32,8 +32,16 @@
         mode: "0644"
       loop:
         - from: init_config.ini
-          to: /etc/qbittorrent/config/qBittorrent.conf
+          to: /data/.qbittorrent/config/qBittorrent.conf
       when: not config_dir.stat.exists
+
+    - name: Create opt directory
+      ansible.builtin.file:
+        path: /opt/qbittorrent
+        state: directory
+        owner: root
+        group: root
+        mode: "0755"
 
     - name: Copy custom entrypoint
       ansible.builtin.template:
@@ -44,7 +52,7 @@
         mode: "0755"
       loop:
         - from: entrypoint.sh
-          to: /etc/qbittorrent/entrypoint.sh
+          to: /opt/qbittorrent/entrypoint.sh
 
     - name: Create VPN config directory
       ansible.builtin.file:
