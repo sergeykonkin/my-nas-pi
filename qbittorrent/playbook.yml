@@ -31,7 +31,7 @@
         group: root
         mode: "0644"
       loop:
-        - from: default_config.ini
+        - from: init_config.ini
           to: /etc/qbittorrent/config/qBittorrent.conf
       when: not config_dir.stat.exists
 
@@ -45,6 +45,25 @@
       loop:
         - from: entrypoint.sh
           to: /etc/qbittorrent/entrypoint.sh
+
+    - name: Create VPN config directory
+      ansible.builtin.file:
+        path: /etc/vpn
+        state: directory
+        owner: root
+        group: root
+        mode: "0755"
+
+    - name: Copy VPN profile 
+      ansible.builtin.template:
+        src: "{{ item.from }}"
+        dest: "{{ item.to  }}"
+        owner: root
+        group: root
+        mode: "0644"
+      loop:
+        - from: profile.ovpn
+          to: /etc/vpn/profile.ovpn
 
     - name: Copy manifest
       ansible.builtin.template:

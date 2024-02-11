@@ -14,9 +14,6 @@ spec:
           value: "0"
         - name: GUID
           value: "0"
-      ports:
-        - containerPort: 8080
-          hostPort: 8080
       volumeMounts:
         - name: config
           mountPath: /config/qBittorrent
@@ -26,6 +23,26 @@ spec:
           mountPath: /tmp
         - name: data
           mountPath: /data
+
+    - name: openvpn-client
+      image: ghcr.io/wfg/openvpn-client:3.1.0
+      securityContext:
+        capabilities: {add: ['NET_ADMIN']}
+      env:
+        - name: VPN_CONFIG_FILE
+          value: profile.ovpn
+        - name: SUBNETS
+          value: "{{ subnet }}"
+      ports:
+        - containerPort: 8080
+          hostPort: 8080
+      volumeMounts:
+        - name: ovpn-profile
+          mountPath: /data/vpn/profile.ovpn
+          readOnly: true
+        - name: dev-net-tun
+          mountPath: /dev/net/tun
+
   volumes:
     - name: config
       hostPath:
@@ -41,3 +58,11 @@ spec:
       hostPath:
         path: /data
         type: Directory
+
+    - name: ovpn-profile
+      hostPath:
+        path: /etc/vpn/profile.ovpn
+        type: File
+    - name: dev-net-tun
+      hostPath:
+        path: /dev/net/tun
