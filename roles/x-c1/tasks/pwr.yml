@@ -23,3 +23,6 @@
     daemon_reload: true
     enabled: true
   notify: pwr_restart
+
+- name: Flush handlers
+  ansible.builtin.meta: flush_handlers

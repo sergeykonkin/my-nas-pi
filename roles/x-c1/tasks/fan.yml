@@ -1,7 +1,4 @@
 ---
-- name: Flush handlers
-  ansible.builtin.meta: flush_handlers
-
 - name: Copy x-c1-fan.sh
   ansible.builtin.copy:
     src: files/x-c1-fan.sh
