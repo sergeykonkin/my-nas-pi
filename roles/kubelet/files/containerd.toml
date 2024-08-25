@@ -7,3 +7,6 @@ oom_score = -999
   bin_dir = "/opt/cni/bin"
   conf_dir = "/etc/cni/net.d"
   conf_template = "/etc/cni/cni.template"
+
+[plugins."io.containerd.snapshotter.v1.overlayfs"]
+  disabled = true
